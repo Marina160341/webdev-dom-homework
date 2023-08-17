@@ -10,7 +10,7 @@
     <div class="container">
       <ul class="comments" id="commentContainer"></ul>
       <div class="add-form">
-        <input
+        <input 
           type="text" id="nameUser"
           class="add-form-name"
           placeholder="Введите ваше имя"
@@ -50,14 +50,14 @@
     data: "08.08.2023 18:55",
     comment:"Это будет первый комментарий к этой странице",
     like: 3,
-    isliked: false,
+    isliked: true,
     },
     {
      name: "Марина Кемова",
      data: "08.08.2023 18:55",
      comment:"Это будет первый комментарий к этой странице",
      like: 3,
-     isliked: false,
+     isliked: true,
     },
     ] 
   Data=Data.toLocaleString();
@@ -92,7 +92,7 @@
           <div class="comment-footer">
             <div class="likes";
               <span class="likes-counter">${comment.like}</span>
-              <button  id="like-button" class="like-button ${comments.isliked ? '-active-like': ''}" data-index="${index}"></button>
+              <button  id="like-button" class="like-button ${comment.isliked ? '-active-like': ''}" data-index="${index}"></button>
             </div>
           </div>
         </li>`;
@@ -121,5 +121,17 @@
     });
   renderComments();
       });
+    
+  const anotherComments=()=>{
+  const commentsForm=document.querySelectorAll(".comments");
+      for (const commentForm of commentsForm ){
+        commentForm.addEventListener("click",()=>{
+          const textUserElement=document.getElementById('textUser');
+          textUserElement.focus();
+        }
+     )};
+   };
+  anotherComments(); 
+  renderComments();
     </script>
 </html>
