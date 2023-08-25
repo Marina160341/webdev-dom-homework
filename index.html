@@ -37,6 +37,7 @@
 </style>
 <script>
   "use strict";
+
   const buttonElement = document.getElementById('buttonAdd');
   const commentContainerElement=document.getElementById('commentContainer');
   const commentlistElement=document.getElementById('commentList');
@@ -44,22 +45,25 @@
   const textUserElement=document.getElementById('textUser');
   const likesLink=document.querySelectorAll('.likes-counter');
   const commentText=document.getElementById('comment');
+  const result= fetch ('https://wedev-api.sky.pro/api/v1/kemova-marina/comments' ,  
+  {
+      method: "GET",
+});
+console.log(result);
+result.then((response) => {
+  console.log(response);
+   const jsonResult = response.json();
+   console.log(jsonResult);
+   jsonResult.then((responseData) =>{
+     console.log(responseData);
+     comments=responseData.comments;
+renderComments();
+});
+  });
+  
   let Data=new Date();
   const comments=[
-    {
-    name: "Глеб Фокин",
-    data: "08.08.2023 18:55",
-    comment:"Это будет первый комментарий к этой странице",
-    like: 3,
-    isliked: true,
-    },
-    {
-     name: "Марина Кемова",
-     data: "08.08.2023 18:55",
-     comment:"Это будет второй комментарий к этой странице",
-     like: 3,
-     isliked: true,
-    },
+  
     ] 
   Data=Data.toLocaleString();
   const anotherComments=()=>{
@@ -126,13 +130,33 @@ const commentsForm=document.querySelectorAll(".comment-body");
         textUserElement.classList.add('error');
         return
       }
-      comments.push({
+      const result= fetch ('https://wedev-api.sky.pro/api/v1/kemova-marina/comments' ,  
+  {
+      method: "POST",
+       body: JSON.stringify({ 
+        text : textUserElement.value,
+        name: nameUserElement.value
+       })
+});
+console.log(result);
+result.then((response) => {
+  console.log(response);
+   const jsonResult = response.json();
+   console.log(jsonResult);
+   jsonResult.then((responseData) =>{
+    const appComments= responseData.comments.map((comment)=>{
+      return {
         name: nameUserElement.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
         data: Data,
         comment:textUserElement.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
         like: 0,
-        islike:false
-    });
+        islike:false,
+       }
+    })
+     comments=appComments;
+     renderComments();
+});
+  });
   renderComments();
   nameUserElement.value="";
   textUserElement.value='';
