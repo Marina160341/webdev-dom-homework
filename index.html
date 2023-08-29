@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
     <div class="container">
       <ul class="comments" id="commentContainer"></ul>
@@ -45,36 +44,37 @@
   const textUserElement=document.getElementById('textUser');
   const likesLink=document.querySelectorAll('.likes-counter');
   const commentText=document.getElementById('comment');
+  let comments=[] 
+  const resultGET=()=>{
   const result= fetch ('https://wedev-api.sky.pro/api/v1/kemova-marina/comments' ,  
   {
       method: "GET",
 });
-console.log(result);
 result.then((response) => {
-  console.log(response);
    const jsonResult = response.json();
-   console.log(jsonResult);
-   jsonResult.then((responseData) =>{
-     console.log(responseData);
-     comments=responseData.comments;
+    jsonResult.then((responseData) =>{
+      const appComments= responseData.comments.map((comment)=>{
+      return {
+        name: comment.author.name,
+        data: new Date(comment.date),
+        text:comment.text,
+        likes: comment.likes,
+        isliked:false,
+       }
+    })
+    comments=appComments;
 renderComments();
 });
   });
-  
-  let Data=new Date();
-  const comments=[
-  
-    ] 
-  Data=Data.toLocaleString();
-  const anotherComments=()=>{
+};
+resultGET();
+const anotherComments=()=>{
 const commentsForm=document.querySelectorAll(".comment-body");
     for (const commentForm of commentsForm ){
       commentForm.addEventListener("click",()=>{
-        console.log(commentForm);
         const oldComment = commentForm.dataset.text;
         const oldName = commentForm.dataset.name;
         textUserElement.value += `<${oldComment} \n ${oldName}.,`;
-
       }
    )};
  };
@@ -101,14 +101,14 @@ const commentsForm=document.querySelectorAll(".comment-body");
             <div>${comment.name}</div>
             <div>${comment.data}</div>
           </div>
-          <div class="comment-body" id="comment-body" data-text = "${comment.comment}" data-name = "${comment.name}">
+          <div class="comment-body" id="comment-body" data-text = "${comment.text}" data-name = "${comment.name}">
             <div class="comments">
-              ${comment.comment}
+              ${comment.text}
           </div>
           </div>
           <div class="comment-footer">
             <div class="likes";
-              <span class="likes-counter">${comment.like}</span>
+              <span class="likes-counter">${comment.likes}</span>
               <button  id="like-button" class="like-button ${comment.isliked ? '-active-like': ''}" data-index="${index}"></button>
             </div>
           </div>
@@ -144,20 +144,12 @@ result.then((response) => {
    const jsonResult = response.json();
    console.log(jsonResult);
    jsonResult.then((responseData) =>{
-    const appComments= responseData.comments.map((comment)=>{
-      return {
-        name: nameUserElement.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
-        data: Data,
-        comment:textUserElement.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
-        like: 0,
-        islike:false,
-       }
-    })
-     comments=appComments;
-     renderComments();
+     console.log(responseData);
+    let comments=responseData.comments;
+renderComments();
+resultGET();
 });
   });
-  renderComments();
   nameUserElement.value="";
   textUserElement.value='';
       });
