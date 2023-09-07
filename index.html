@@ -39,12 +39,12 @@
     const commentText = document.getElementById('comment');
     let comments = []
     const resultGET = () => {
-        const result = fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
+         fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
             method: "GET",
-        });
-        result.then((response) => {
-            const jsonResult = response.json();
-            jsonResult.then((responseData) => {
+        })
+        .then((response) => {
+            return response.json()
+        }).then((responseData) => {
                 const appComments = responseData.comments.map((comment) => {
                     return {
                         name: comment.author.name,
@@ -57,8 +57,7 @@
                 comments = appComments;
                 renderComments();
             });
-        });
-    };
+          };
     resultGET();
     const anotherComments = () => {
         const commentsForm = document.querySelectorAll(".comment-body");
