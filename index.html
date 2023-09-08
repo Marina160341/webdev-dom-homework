@@ -37,6 +37,8 @@
     const commentText = document.getElementById('comment');
     let comments = []
     const resultGET = () => {
+      buttonElement.disabled = true;
+      buttonElement.textContent = 'Идёт загрузка...';
       fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
             method: "GET",
           })
@@ -53,6 +55,8 @@
                     }
                 })
                 comments = appComments;
+                buttonElement.disabled = false;
+                buttonElement.textContent = 'Написать';
                 renderComments();
             });
           };
