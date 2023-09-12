@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Проект "Комменты"</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.css" /> </head>
+
 <body>
     <div class="container">
         <ul class="comments" id="commentContainer"></ul>
@@ -35,31 +37,46 @@
     const textUserElement = document.getElementById('textUser');
     const likesLink = document.querySelectorAll('.likes-counter');
     const commentText = document.getElementById('comment');
+    const buttonDisabledTrue = () => {
+        buttonElement.disabled = true;
+        buttonElement.textContent = 'Идёт загрузка...';
+    }
+    const buttonDisabledFalse = () => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+    }
     let comments = []
     const resultGET = () => {
-      buttonElement.disabled = true;
-      buttonElement.textContent = 'Идёт загрузка...';
-      fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
+        buttonDisabledTrue();
+        fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
             method: "GET",
-          })
-        .then((response) => {
-            return response.json()
+        }).then((response) => {
+            if (response.status === 200) {
+                return response.json()
+            } else {
+                throw new Error("Сервер упал")
+                return response.json()
+            };
         }).then((responseData) => {
-                const appComments = responseData.comments.map((comment) => {
-                    return {
-                        name: comment.author.name,
-                        data: new Date(comment.date).toLocaleString(),
-                        text: comment.text,
-                        likes: comment.likes,
-                        isliked: false,
-                    }
-                })
-                comments = appComments;
-                buttonElement.disabled = false;
-                buttonElement.textContent = 'Написать';
-                renderComments();
-            });
-          };
+            const appComments = responseData.comments.map((comment) => {
+                return {
+                    name: comment.author.name,
+                    data: new Date(comment.date).toLocaleString(),
+                    text: comment.text,
+                    likes: comment.likes,
+                    isliked: false,
+                    forceError: true,
+                }
+            })
+            comments = appComments;
+            buttonDisabledFalse();
+            renderComments();
+        }).catch((error) => {
+            alert("Кажеться что то пошло не так,попробуй позже");
+            buttonDisabledFalse();
+            console.warn(error);
+        })
+    };
     resultGET();
     const anotherComments = () => {
         const commentsForm = document.querySelectorAll(".comment-body");
@@ -123,8 +140,7 @@
             textUserElement.classList.add('error');
             return
         }
-        buttonElement.disabled = true;
-        buttonElement.textContent = 'Элемент добавляется...';
+        buttonDisabledTrue();
         const result = fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
             method: "POST",
             body: JSON.stringify({
@@ -132,7 +148,14 @@
                 name: nameUserElement.value
             })
         }).then((response) => {
-            return response.json();
+            if (response.status === 500) {
+                throw new Error("Сервер упал")
+            }
+            if (response.status === 400) {
+                throw new Error("плохой запрос")
+            } else {
+                return response.json()
+            };
         }).then((responseData) => {
             return fetch('https://wedev-api.sky.pro/api/v1/kemova-marina/comments', {
                 method: "GET",
@@ -142,13 +165,30 @@
         }).then((responseData) => {
             resultGET();
             renderComments();
-            buttonElement.disabled = false;
-            buttonElement.textContent = 'Написать';
+            buttonDisabledFalse()
+            nameUserElement.value = "";
+            textUserElement.value = '';
+        }).catch((error) => {
+          if (error.message ==='Сервер упал'){
+            alert("Сервер сломался, попробуй позже")
+            return;
+          }
+          else if(error.message ==='плохой запрос'){
+            alert("Ты сделал ошибку в запросе, исправь данные и попробуй снова")
+            return;
+          }
+          else{
+          alert('Кажеться что то пошло не так,попробуй позже')
+          }
+           console.log(error);
+          });
+           
+            buttonDisabledFalse();
+           
         })
         renderComments();
-        nameUserElement.value = "";
-        textUserElement.value = '';
-    });
+    
     renderComments();
 </script>
+
 </html>
