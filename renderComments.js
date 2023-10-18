@@ -1,4 +1,16 @@
-import {initEventListeners, anotherComments } from './main.js'
+
+const textUserElement = document.getElementById('textUser');
+import {initEventListeners} from './main.js'
+const anotherComments = () => {
+  const commentsForm = document.querySelectorAll(".comment-body");
+  for (const commentForm of commentsForm) {
+      commentForm.addEventListener("click", () => {
+          const oldComment = commentForm.dataset.text;
+          const oldName = commentForm.dataset.name;
+          textUserElement.value += `<${oldComment} \n ${oldName}.,`;
+      })
+  };
+};
 const commentContainerElement = document.getElementById('commentContainer');
 export const  renderComments= ({comments, resultGET}) => {
   const commentHTML = comments.map((comment, index) => {
@@ -23,4 +35,5 @@ export const  renderComments= ({comments, resultGET}) => {
 commentContainerElement.innerHTML = commentHTML;
 initEventListeners();
 anotherComments();
-}   
+}  
+

@@ -1,13 +1,9 @@
 import {getTodos, postTodos} from './api.js' 
-import {renderComments} from './Render.js'
+import {renderComments } from './renderComments.js'
 const buttonElement = document.getElementById('buttonAdd');
-    const commentContainerElement = document.getElementById('commentContainer');
-    const commentlistElement = document.getElementById('commentList');
-    const nameUserElement = document.getElementById('nameUser');
-    const textUserElement = document.getElementById('textUser');
-    const likesLink = document.querySelectorAll('.likes-counter');
-    const commentText = document.getElementById('comment');
-    const buttonDisabledTrue = () => {
+const nameUserElement = document.getElementById('nameUser');
+const textUserElement = document.getElementById('textUser');
+const buttonDisabledTrue = () => {
         buttonElement.disabled = true;
         buttonElement.textContent = 'Идёт загрузка...';
     }
@@ -39,20 +35,12 @@ const buttonElement = document.getElementById('buttonAdd');
             })
     };
     resultGET();
-   export const anotherComments = () => {
-        const commentsForm = document.querySelectorAll(".comment-body");
-        for (const commentForm of commentsForm) {
-            commentForm.addEventListener("click", () => {
-                const oldComment = commentForm.dataset.text;
-                const oldName = commentForm.dataset.name;
-                textUserElement.value += `<${oldComment} \n ${oldName}.,`;
-            })
-        };
-    };
      export const initEventListeners = () => {
         const likesButton = document.querySelectorAll(".like-button");
         for (const likeButton of likesButton) {
             likeButton.addEventListener("click", () => {
+                console.log(likeButton);
+                console.log(likeButton.dataset.index);
                 const index = likeButton.dataset.index;
                 if (comments[index].isliked) {
                     comments[index].isliked = false;
@@ -65,7 +53,6 @@ const buttonElement = document.getElementById('buttonAdd');
             });
         };
     };
-    renderComments({comments});
     buttonElement.addEventListener("click", () => {
         nameUserElement.classList.remove('error');
         buttonElement.classList.remove('no-click')
