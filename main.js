@@ -44,10 +44,10 @@ const buttonDisabledTrue = () => {
                 const index = likeButton.dataset.index;
                 if (comments[index].isliked) {
                     comments[index].isliked = false;
-                    comments[index].like--;
+                    comments[index].likes--;
                 } else {
                     comments[index].isliked = true;
-                    comments[index].like++;
+                    comments[index].likes++;
                     };
                 renderComments({comments});
             });
