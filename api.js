@@ -1,3 +1,14 @@
+const  commentsURL ='https://wedev-api.sky.pro/api/v2/kemova-marina/comments'
+const  userURL ='https://wedev-api.sky.pro/api/user/login'
+<<<<<<< HEAD
+const registrationURL = 'https://wedev-api.sky.pro/api/user'
+=======
+>>>>>>> 77b2d899f185e538ec693e751837def1b99e8785
+export let token;
+export const setToken = (newToken) =>{
+    token = newToken;
+   }
+
 export function getTodos (){
      return fetch(commentsURL, {
         method: "GET",
@@ -38,3 +49,40 @@ if (response.status===401)
             };
         })
     }
+    export function loginUs ({login, password}){
+        return fetch(userURL, {
+        method: "POST",
+        body: JSON.stringify({
+        login,
+        password,
+                            })
+                    }).then((response) => {
+                         
+        return response.json();
+                        
+                    })
+                }
+<<<<<<< HEAD
+
+    export function registration ({login, password, name}){
+        return fetch(registrationURL, {
+        method: "POST",
+        body: JSON.stringify({
+        login,
+        name,
+        password,
+                          })
+         }).then((response) => {
+        return response.json();
+                                    
+                                })
+                            }
+=======
+>>>>>>> 77b2d899f185e538ec693e751837def1b99e8785
+    // export function deleteTodo({ id }) {
+    //     return fetch("https://wedev-api.sky.pro/api/v1/kemova-marina/comments/" + id, {
+    //       method: "DELETE",
+    //     }).then((response) => {
+    //       return response.json();
+    //     });
+    //   }
