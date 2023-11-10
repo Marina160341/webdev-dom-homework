@@ -24,6 +24,7 @@ export const  renderComments= (({comments, resultGET}) => {
   </li>`;
   }).join('');
 
+<<<<<<< HEAD
   const appHtml = 
    ` <div class="container">
     <ul class="comments" id="commentContainer">${commentHTML}</ul>
@@ -110,3 +111,6 @@ const anotherComments = ({textUserElement}) => {
       })
   };
 };
+=======
+)
+>>>>>>> 39b5fa86111b9ab553970a4f591a01d4bb1ef1d7

@@ -40,3 +40,7 @@ renderLogin({ resultGET });
 
 //renderRegistr({resultGET})
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 39b5fa86111b9ab553970a4f591a01d4bb1ef1d7
