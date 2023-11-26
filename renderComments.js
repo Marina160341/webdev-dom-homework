@@ -1,14 +1,14 @@
 import { postTodos } from "./api.js";
-const textUserElement = document.getElementById('textUser');
+import { format } from "date-fns";
 
-//const commentContainerElement = document.getElementById('commentContainer');
 export const  renderComments= (({comments, resultGET}) => {
   const appElement=document.getElementById("app");
   const commentHTML = comments.map((comment, index) => {
+    const createDate = format(new Date(comment.created_at), 'yyyy-MM-dd hh.mm.ss');
       return `<li class="comment" style="white-space: pre-line">
     <div class="comment-header">
       <div>${comment.name}</div>
-      <div>${comment.data}</div>
+    <p><i>Задача создана: ${createDate}</i></p>
     </div>
     <div class="comment-body" id="comment-body" data-text = "${comment.text}" data-name = "${comment.name}">
       <div class="comments">

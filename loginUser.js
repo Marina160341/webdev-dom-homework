@@ -25,12 +25,12 @@ export const renderLogin = ({resultGET}) => {
             login: loginInputElement.value,
             password: passwordInputElement.value,
         }).then((responseData) => {
-            console.log(token);
+
             setToken(responseData.user.token);
             console.log(token);
         }).then(() => {
-            if (token) {}
-            resultGET()
+            if (token) {resultGET()}
+                    
         })
     })
     buttonElementRegistr.addEventListener("click", () => {
